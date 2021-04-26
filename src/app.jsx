@@ -36,6 +36,25 @@ class App extends Component {
     habits = habits.filter((item) => item.id !== habit.id);
     this.setState({ habits });
   };
+  handleAdd = (name) => {
+    const newHabit = { name, count: 0 };
+    const habits = [...this.state.habits];
+    let result = true;
+
+    habits.forEach((item) => {
+      if (item.name === newHabit.name) {
+        alert('이미 존재하는 Habit입니다.');
+        result = false;
+      }
+    });
+    if (!result) return;
+
+    newHabit.id = !habits.length ? 1 : habits[habits.length - 1].id + 1;
+
+    habits.push(newHabit);
+
+    this.setState({ habits });
+  };
 
   totalNumber = () => {
     let count = 0;
@@ -47,6 +66,15 @@ class App extends Component {
     return count;
   };
 
+  handleReset = () => {
+    const habits = this.state.habits.map((item) => {
+      item.count = 0;
+      return item;
+    });
+    
+    this.setState({ habits });
+  };
+
   render() {
     return (
       <>
@@ -56,8 +84,9 @@ class App extends Component {
           onIncrement={this.handleIncrement}
           onDecrement={this.handleDecrement}
           onDelete={this.handleDelete}
+          onAdd={this.handleAdd}
+          onReset={this.handleReset}
         />
-        ;
       </>
     );
   }
