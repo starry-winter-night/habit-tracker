@@ -37,6 +37,19 @@ button {
   border-radius: 50%;
 }
 
+.habit-form {
+  padding: 0.7em 1em;
+  display: inline-block;
+}
+
+.habit-addBtn {
+  display: inline-block;
+  font-size: 1rem;
+  padding: 0.2em 1em;
+  background-color: green;
+  color: white;
+}
+
 .habit {
   font-size: 2.5rem;
   padding: 0.5em;
@@ -75,4 +88,11 @@ button {
 .habit-delete {
   font-size: 2rem;
   color: darkred;
+}
+
+.habit-reset {
+  font-size: 1.5rem;
+  padding: 0.2em 1em;
+  background-color: green;
+  color: white;
 }
