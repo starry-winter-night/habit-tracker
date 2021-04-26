@@ -71,7 +71,7 @@ class App extends Component {
       item.count = 0;
       return item;
     });
-    
+
     this.setState({ habits });
   };
 

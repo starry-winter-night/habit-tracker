@@ -1,31 +1,26 @@
-import React, { Component } from 'react';
+import React, { memo } from 'react';
 
-class HabitAdd extends Component {
-  inputRef = React.createRef();
-  onSubmit = (e) => {
+const HabitAdd = memo((props) => {
+  const inputRef = React.createRef();
+  const onSubmit = (e) => {
     e.preventDefault();
-    const name = this.inputRef.current.value;
-    name && this.props.onAdd(name);
-    this.inputRef.current.value = '';
+    const name = inputRef.current.value;
+    name && props.onAdd(name);
+    inputRef.current.value = '';
   };
 
-  render() {
-    return (
-      <div>
-        <form className="habit-form" onSubmit={this.onSubmit}>
-          <input
-            ref={this.inputRef}
-            type="text"
-            className="habit-input"
-            placeholder="Habit"
-          ></input>
-        </form>
-        <button className="habit-addBtn" onClick={this.onSubmit}>
-          Add
-        </button>
-      </div>
-    );
-  }
-}
+  return (
+    <form className="habit-form" onSubmit={onSubmit}>
+      <input
+        ref={inputRef}
+        type="text"
+        className="habit-input"
+        placeholder="Habit"
+      ></input>
+
+      <button className="habit-addBtn">Add</button>
+    </form>
+  );
+});
 
 export default HabitAdd;

@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Habit from './habit';
 import HabitAdd from './habitAdd';
 
-class Habits extends Component {
+class Habits extends PureComponent {
   render() {
+
     return (
       <>
         <HabitAdd onAdd={this.props.onAdd} />

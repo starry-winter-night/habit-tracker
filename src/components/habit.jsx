@@ -6,6 +6,14 @@ import {
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 class Habit extends Component {
+  // componentDidMount() {
+  //   console.log(`habit: ${this.props.habit.name} mounted`)
+  // }
+
+  // componentWillUnmount() {
+  //   console.log(`habit: ${this.props.habit.name} unMounted`)
+  // }
+
   handleIncrement = () => {
     this.props.onIncrement(this.props.habit);
   };
