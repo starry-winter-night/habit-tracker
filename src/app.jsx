@@ -4,82 +4,78 @@ import Navibar from './components/navibar';
 import Habits from './components/habits';
 
 const App = () => {
-  const [state, setState] = useState({
-    habits: [
-      { id: 1, name: 'Reading', count: 0 },
-      { id: 2, name: 'Running', count: 0 },
-      { id: 3, name: 'Coding', count: 0 },
-    ],
-  });
+  const [habits, setHabits] = useState([
+    { id: 1, name: 'Reading', count: 0 },
+    { id: 2, name: 'Running', count: 0 },
+    { id: 3, name: 'Coding', count: 0 },
+  ]);
 
   const handleIncrement = useCallback((habit) => {
-    const habits = [...state.habits];
-    const index = habits.indexOf(habit);
-    habits[index].count++;
-
-    // state를 업데이트 할때는 꼭 setState를 사용해야 react가 render를 다시 호출함
-    // 오브젝트를 넣어주어야 함.
-    setState({ habits });
+    setHabits((habits) =>
+      habits.map((item) => {
+        if (item.id === habit.id) {
+          return { ...habit, count: habit.count + 1 };
+        }
+        return item;
+      })
+    );
   }, []);
 
   const handleDecrement = useCallback((habit) => {
-    const habits = [...state.habits];
-    const index = habits.indexOf(habit);
-    const count = habits[index].count - 1;
-    habits[index].count = count > 0 ? count : 0;
-
-    setState({ habits });
+    setHabits((habits) =>
+      habits.map((item) => {
+        if (item.id === habit.id) {
+          const count = habit.count > 0 ? habit.count - 1 : 0;
+          return { ...habit, count };
+        }
+        return item;
+      })
+    );
   }, []);
 
   const handleDelete = useCallback((habit) => {
-    let habits = [...state.habits];
-    habits = habits.filter((item) => item.id !== habit.id);
-    setState({ habits });
+    setHabits((habits) => habits.filter((item) => item.id !== habit.id));
   }, []);
+
   const handleAdd = useCallback((name) => {
     const newHabit = { name, count: 0 };
-    const habits = [...state.habits];
+
     let result = true;
 
-    habits.forEach((item) => {
-      if (item.name === newHabit.name) {
-        alert('이미 존재하는 Habit입니다.');
-        result = false;
+    setHabits((habits) => {
+      for (const item of habits) {
+        if (item.name === newHabit.name) {
+          result = false;
+          alert('이미 존재하는 Habit입니다.');
+          break;
+        }
+        if (!result) return [...habits];
+      }
+
+      if (result) {
+        newHabit.id = !habits.length ? 1 : habits[habits.length - 1].id + 1;
+        return [...habits, newHabit];
       }
     });
-    if (!result) return;
-
-    newHabit.id = !habits.length ? 1 : habits[habits.length - 1].id + 1;
-
-    habits.push(newHabit);
-
-    setState({ habits });
   }, []);
 
   const totalNumber = useCallback(() => {
-    let count = 0;
-    state.habits.map((item) => {
-      if (item.count > 0) {
-        count = count + 1;
-      }
-    });
-    return count;
-  }, []);
+    return habits.filter((item) => item.count > 0).length;
+  });
 
   const handleReset = useCallback(() => {
-    const habits = state.habits.map((item) => {
-      item.count = 0;
-      return item;
-    });
-
-    setState({ habits });
+    setHabits((habits) =>
+      habits.map((item) => {
+        return { ...item, count: 0 };
+      })
+    );
   }, []);
 
   return (
     <>
       <Navibar totalNumber={totalNumber} />
       <Habits
-        habits={state.habits}
+        habits={habits}
         onIncrement={handleIncrement}
         onDecrement={handleDecrement}
         onDelete={handleDelete}
