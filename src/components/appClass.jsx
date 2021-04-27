@@ -1,44 +1,44 @@
-import React, { useCallback, useState } from 'react';
+import React, { Component } from 'react';
 import './app.css';
 import Navibar from './components/navibar';
 import Habits from './components/habits';
 
-const App = () => {
-  const [state, setState] = useState({
+class App extends Component {
+  state = {
     habits: [
       { id: 1, name: 'Reading', count: 0 },
       { id: 2, name: 'Running', count: 0 },
       { id: 3, name: 'Coding', count: 0 },
     ],
-  });
+  };
 
-  const handleIncrement = useCallback((habit) => {
-    const habits = [...state.habits];
+  handleIncrement = (habit) => {
+    const habits = [...this.state.habits];
     const index = habits.indexOf(habit);
     habits[index].count++;
 
     // state를 업데이트 할때는 꼭 setState를 사용해야 react가 render를 다시 호출함
     // 오브젝트를 넣어주어야 함.
-    setState({ habits });
-  }, []);
+    this.setState({ habits });
+  };
 
-  const handleDecrement = useCallback((habit) => {
-    const habits = [...state.habits];
+  handleDecrement = (habit) => {
+    const habits = [...this.state.habits];
     const index = habits.indexOf(habit);
     const count = habits[index].count - 1;
     habits[index].count = count > 0 ? count : 0;
 
-    setState({ habits });
-  }, []);
+    this.setState({ habits });
+  };
 
-  const handleDelete = useCallback((habit) => {
-    let habits = [...state.habits];
+  handleDelete = (habit) => {
+    let habits = [...this.state.habits];
     habits = habits.filter((item) => item.id !== habit.id);
-    setState({ habits });
-  }, []);
-  const handleAdd = useCallback((name) => {
+    this.setState({ habits });
+  };
+  handleAdd = (name) => {
     const newHabit = { name, count: 0 };
-    const habits = [...state.habits];
+    const habits = [...this.state.habits];
     let result = true;
 
     habits.forEach((item) => {
@@ -53,41 +53,43 @@ const App = () => {
 
     habits.push(newHabit);
 
-    setState({ habits });
-  }, []);
+    this.setState({ habits });
+  };
 
-  const totalNumber = useCallback(() => {
+  totalNumber = () => {
     let count = 0;
-    state.habits.map((item) => {
+    this.state.habits.map((item) => {
       if (item.count > 0) {
         count = count + 1;
       }
     });
     return count;
-  }, []);
+  };
 
-  const handleReset = useCallback(() => {
-    const habits = state.habits.map((item) => {
+  handleReset = () => {
+    const habits = this.state.habits.map((item) => {
       item.count = 0;
       return item;
     });
 
-    setState({ habits });
-  }, []);
+    this.setState({ habits });
+  };
 
-  return (
-    <>
-      <Navibar totalNumber={totalNumber} />
-      <Habits
-        habits={state.habits}
-        onIncrement={handleIncrement}
-        onDecrement={handleDecrement}
-        onDelete={handleDelete}
-        onAdd={handleAdd}
-        onReset={handleReset}
-      />
-    </>
-  );
-};
+  render() {
+    return (
+      <>
+        <Navibar totalNumber={this.totalNumber} />
+        <Habits
+          habits={this.state.habits}
+          onIncrement={this.handleIncrement}
+          onDecrement={this.handleDecrement}
+          onDelete={this.handleDelete}
+          onAdd={this.handleAdd}
+          onReset={this.handleReset}
+        />
+      </>
+    );
+  }
+}
 
 export default App;
