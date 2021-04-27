@@ -1,30 +1,34 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import Habit from './habit';
 import HabitAdd from './habitAdd';
 
-class Habits extends PureComponent {
-  render() {
-
-    return (
-      <>
-        <HabitAdd onAdd={this.props.onAdd} />
-        <ul>
-          {this.props.habits.map((habit) => (
-            <Habit
-              key={habit.id}
-              habit={habit}
-              onIncrement={this.props.onIncrement}
-              onDecrement={this.props.onDecrement}
-              onDelete={this.props.onDelete}
-            />
-          ))}
-        </ul>
-        <button className="habit-reset" onClick={this.props.onReset}>
-          Reset All
-        </button>
-      </>
-    );
-  }
-}
+const Habits = ({
+  habits,
+  onAdd,
+  onIncrement,
+  onDecrement,
+  onDelete,
+  onReset,
+}) => {
+  return (
+    <>
+      <HabitAdd onAdd={onAdd} />
+      <ul>
+        {habits.map((habit) => (
+          <Habit
+            key={habit.id}
+            habit={habit}
+            onIncrement={onIncrement}
+            onDecrement={onDecrement}
+            onDelete={onDelete}
+          />
+        ))}
+      </ul>
+      <button className="habit-reset" onClick={onReset}>
+        Reset All
+      </button>
+    </>
+  );
+};
 
 export default Habits;
